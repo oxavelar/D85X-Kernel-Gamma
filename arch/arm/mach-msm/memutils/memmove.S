@@ -56,9 +56,14 @@ ENTRY(memmove)
 	CALGN(	add	pc, r4, ip		)
 
 	PLD(	pld	[r1, #-4]		)
+<<<<<<< HEAD
+=======
+2:	PLD(	subs	r2, r2, #192		)
+>>>>>>> 585579c6c63... msm: memutils: memcpy, memmove optimization
 	PLD(	pld	[r1, #-68]		)
 	PLD(	pld	[r1, #-132]		)
 	PLD(	pld	[r1, #-196]		)
+<<<<<<< HEAD
 	PLD(	pld	[r1, #-260]		)
 	PLD(	pld	[r1, #-324]		)
 2:	PLD(	subs	r2, r2, #512		)
@@ -69,11 +74,20 @@ ENTRY(memmove)
 
 3:	PLD(	pld	[r1, #-580]		)
 
+=======
+
+3:	PLD(	pld	[r1, #-260]		)
+
+>>>>>>> 585579c6c63... msm: memutils: memcpy, memmove optimization
 4:		ldmdb	r1!, {r3, r4, r5, r6, r7, r8, ip, lr}
 		subs	r2, r2, #32
 		stmdb	r0!, {r3, r4, r5, r6, r7, r8, ip, lr}
 		bge	3b
+<<<<<<< HEAD
 	PLD(	cmn	r2, #512		)
+=======
+	PLD(	cmn	r2, #192		)
+>>>>>>> 585579c6c63... msm: memutils: memcpy, memmove optimization
 	PLD(	bge	4b			)
 
 5:		ands	ip, r2, #28
@@ -145,9 +159,14 @@ ENTRY(memmove)
 11:		stmfd	sp!, {r5 - r9}
 
 	PLD(	pld	[r1, #-4]		)
+<<<<<<< HEAD
+=======
+	PLD(	subs	r2, r2, #192		)
+>>>>>>> 585579c6c63... msm: memutils: memcpy, memmove optimization
 	PLD(	pld	[r1, #-68]		)
 	PLD(	pld	[r1, #-132]		)
 	PLD(	pld	[r1, #-196]		)
+<<<<<<< HEAD
 	PLD(	pld	[r1, #-260]		)
 	PLD(	pld	[r1, #-324]		)
 	PLD(	subs	r2, r2, #512		)
@@ -156,6 +175,9 @@ ENTRY(memmove)
 	PLD(	blt	13f			)
 	PLD(	pld	[r1, #-516]		)
 12:	PLD(	pld	[r1, #-580]		)
+=======
+12:	PLD(	pld	[r1, #-260]		)
+>>>>>>> 585579c6c63... msm: memutils: memcpy, memmove optimization
 13:		ldmdb   r1!, {r7, r8, r9, ip}
 		mov     lr, r3, push #\push
 		subs    r2, r2, #32
@@ -177,7 +199,11 @@ ENTRY(memmove)
 		orr     r4, r4, r3, pull #\pull
 		stmdb   r0!, {r4 - r9, ip, lr}
 		bge	12b
+<<<<<<< HEAD
 	PLD(	cmn	r2, #512		)
+=======
+	PLD(	cmn	r2, #192		)
+>>>>>>> 585579c6c63... msm: memutils: memcpy, memmove optimization
 	PLD(	bge	13b			)
 
 		ldmfd	sp!, {r5 - r9}
