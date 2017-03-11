@@ -283,82 +283,82 @@ EXPORT_SYMBOL(of_device_is_available);
 #ifdef CONFIG_MACH_LGE
 int compare_revision(const char *revision)
 {
-	char range = 0;
-	char min_rev_str[16];
-	char max_rev_str[16];
-	char min_rev_no = 0;
-	char max_rev_no = 0;
-	int i = 0, j = 0;
+       char range = 0;
+       char min_rev_str[16];
+       char max_rev_str[16];
+       char min_rev_no = 0;
+       char max_rev_no = 0;
+       int i = 0, j = 0;
 
-	memset(min_rev_str, 0x0, sizeof(min_rev_str));
-	memset(max_rev_str, 0x0, sizeof(min_rev_str));
+       memset(min_rev_str, 0x0, sizeof(min_rev_str));
+       memset(max_rev_str, 0x0, sizeof(min_rev_str));
 
-	if (revision[0] != '.') {
-		while (revision[i] != 0 && revision[i] != '.')
-			min_rev_str[j++] = revision[i++];
+       if (revision[0] != '.') {
+               while (revision[i] != 0 && revision[i] != '.')
+                       min_rev_str[j++] = revision[i++];
 
-		if (revision[i] == '.' && revision[i + 1] == '.' &&
-				revision[i + 2] == '.') {
-			range = 1;
-			i += 3;
-			j = 0;
-			while (revision[i] != 0)
-				max_rev_str[j++] = revision[i++];
-		}
-	} else {
-		if (revision[i] == '.' && revision[i + 1] == '.' &&
-				revision[i + 2] == '.') {
-			range = 1;
-			i += 3;
-			while (revision[i] != 0)
-				max_rev_str[j++] = revision[i++];
-		}
-	}
+               if (revision[i] == '.' && revision[i + 1] == '.' &&
+                               revision[i + 2] == '.') {
+                       range = 1;
+                       i += 3;
+                       j = 0;
+                       while (revision[i] != 0)
+                               max_rev_str[j++] = revision[i++];
+               }
+       } else {
+               if (revision[i] == '.' && revision[i + 1] == '.' &&
+                               revision[i + 2] == '.') {
+                       range = 1;
+                       i += 3;
+                       while (revision[i] != 0)
+                               max_rev_str[j++] = revision[i++];
+               }
+       }
 
-	if (!min_rev_str[0]) {
-		min_rev_no = HW_REV_EVB1;
-	} else {
-		for (i = 0; i < HW_REV_MAX; ++i) {
-			if (!strcmp(rev_str[i], min_rev_str)) {
-				min_rev_no = i;
-				break;
-			}
-		}
+       if (!min_rev_str[0]) {
+               min_rev_no = HW_REV_EVB1;
+       } else {
+               for (i = 0; i < HW_REV_MAX; ++i) {
+                       if (!strcmp(rev_str[i], min_rev_str)) {
+                               min_rev_no = i;
+                               break;
+                       }
+               }
 
-		if (i == HW_REV_MAX) {
-			pr_err("wrong min revision string = %s\n", min_rev_str);
-			return 0;
-		}
-	}
+               if (i == HW_REV_MAX) {
+                       pr_err("wrong min revision string = %s\n", min_rev_str);
+                       return 0;
+               }
+       }
 
-	if (!max_rev_str[0]) {
-		max_rev_no = HW_REV_MAX - 1;
-	} else {
-		for (i = 0; i < HW_REV_MAX; ++i) {
-			if (!strcmp(rev_str[i], max_rev_str)) {
-				max_rev_no = i;
-				break;
-			}
-		}
+       if (!max_rev_str[0]) {
+               max_rev_no = HW_REV_MAX - 1;
+       } else {
+               for (i = 0; i < HW_REV_MAX; ++i) {
+                       if (!strcmp(rev_str[i], max_rev_str)) {
+                               max_rev_no = i;
+                               break;
+                       }
+               }
 
-		if (i == HW_REV_MAX) {
-			pr_err("wrong max revision string = %s\n", max_rev_str);
-			return 0;
-		}
-	}
+               if (i == HW_REV_MAX) {
+                       pr_err("wrong max revision string = %s\n", max_rev_str);
+                       return 0;
+               }
+       }
 
-	if (range) {
-		if (min_rev_no <= lge_get_board_revno() &&
-				lge_get_board_revno() <= max_rev_no)
-			return 1;
-		else
-			return 0;
-	} else {
-		if (min_rev_no == lge_get_board_revno())
-			return 1;
-		else
-			return 0;
-	}
+       if (range) {
+               if (min_rev_no <= lge_get_board_revno() &&
+                               lge_get_board_revno() <= max_rev_no)
+                       return 1;
+               else
+                       return 0;
+       } else {
+               if (min_rev_no == lge_get_board_revno())
+                       return 1;
+               else
+                       return 0;
+       }
 }
 
 /**
@@ -371,22 +371,22 @@ int compare_revision(const char *revision)
  */
 int of_device_is_available_revision(struct device_node *device)
 {
-	int count;
-	int i;
-	const char *revision = NULL;
+       int count;
+       int i;
+       const char *revision = NULL;
 
-	count = of_property_count_strings(device, "revision");
-	if (count < 0)
-		return 1;
+       count = of_property_count_strings(device, "revision");
+       if (count < 0)
+               return 1;
 
-	for (i = 0; i < count; i++) {
-		of_property_read_string_index(device, "revision", i, &revision);
+       for (i = 0; i < count; i++) {
+               of_property_read_string_index(device, "revision", i, &revision);
 
-		if (compare_revision(revision))
-			return 1;
-	}
+               if (compare_revision(revision))
+                       return 1;
+       }
 
-	return 0;
+       return 0;
 }
 EXPORT_SYMBOL(of_device_is_available_revision);
 #endif
@@ -746,12 +746,122 @@ struct device_node *of_find_node_by_phandle(phandle handle)
 EXPORT_SYMBOL(of_find_node_by_phandle);
 
 /**
+ * of_property_read_u32_index - Find and read a u32 from a multi-value property.
+ *
+ * @np:		device node from which the property value is to be read.
+ * @propname:	name of the property to be searched.
+ * @index:	index of the u32 in the list of values
+ * @out_value:	pointer to return value, modified only if no error.
+ *
+ * Search for a property in a device node and read nth 32-bit value from
+ * it. Returns 0 on success, -EINVAL if the property does not exist,
+ * -ENODATA if property does not have a value, and -EOVERFLOW if the
+ * property data isn't large enough.
+ *
+ * The out_value is modified only if a valid u32 value can be decoded.
+ */
+int of_property_read_u32_index(const struct device_node *np,
+				       const char *propname,
+				       u32 index, u32 *out_value)
+{
+	struct property *prop = of_find_property(np, propname, NULL);
+
+	if (!prop)
+		return -EINVAL;
+	if (!prop->value)
+		return -ENODATA;
+	if (((index + 1) * sizeof(*out_value)) > prop->length)
+		return -EOVERFLOW;
+
+	*out_value = be32_to_cpup(((__be32 *)prop->value) + index);
+	return 0;
+}
+EXPORT_SYMBOL_GPL(of_property_read_u32_index);
+
+/**
+ * of_property_read_u8_array - Find and read an array of u8 from a property.
+ *
+ * @np:		device node from which the property value is to be read.
+ * @propname:	name of the property to be searched.
+ * @out_value:	pointer to return value, modified only if return value is 0.
+ * @sz:		number of array elements to read
+ *
+ * Search for a property in a device node and read 8-bit value(s) from
+ * it. Returns 0 on success, -EINVAL if the property does not exist,
+ * -ENODATA if property does not have a value, and -EOVERFLOW if the
+ * property data isn't large enough.
+ *
+ * dts entry of array should be like:
+ *	property = /bits/ 8 <0x50 0x60 0x70>;
+ *
+ * The out_value is modified only if a valid u8 value can be decoded.
+ */
+int of_property_read_u8_array(const struct device_node *np,
+			const char *propname, u8 *out_values, size_t sz)
+{
+	struct property *prop = of_find_property(np, propname, NULL);
+	const u8 *val;
+
+	if (!prop)
+		return -EINVAL;
+	if (!prop->value)
+		return -ENODATA;
+	if ((sz * sizeof(*out_values)) > prop->length)
+		return -EOVERFLOW;
+
+	val = prop->value;
+	while (sz--)
+		*out_values++ = *val++;
+	return 0;
+}
+EXPORT_SYMBOL_GPL(of_property_read_u8_array);
+
+/**
+ * of_property_read_u16_array - Find and read an array of u16 from a property.
+ *
+ * @np:		device node from which the property value is to be read.
+ * @propname:	name of the property to be searched.
+ * @out_value:	pointer to return value, modified only if return value is 0.
+ * @sz:		number of array elements to read
+ *
+ * Search for a property in a device node and read 16-bit value(s) from
+ * it. Returns 0 on success, -EINVAL if the property does not exist,
+ * -ENODATA if property does not have a value, and -EOVERFLOW if the
+ * property data isn't large enough.
+ *
+ * dts entry of array should be like:
+ *	property = /bits/ 16 <0x5000 0x6000 0x7000>;
+ *
+ * The out_value is modified only if a valid u16 value can be decoded.
+ */
+int of_property_read_u16_array(const struct device_node *np,
+			const char *propname, u16 *out_values, size_t sz)
+{
+	struct property *prop = of_find_property(np, propname, NULL);
+	const __be16 *val;
+
+	if (!prop)
+		return -EINVAL;
+	if (!prop->value)
+		return -ENODATA;
+	if ((sz * sizeof(*out_values)) > prop->length)
+		return -EOVERFLOW;
+
+	val = prop->value;
+	while (sz--)
+		*out_values++ = be16_to_cpup(val++);
+	return 0;
+}
+EXPORT_SYMBOL_GPL(of_property_read_u16_array);
+
+/**
  * of_property_read_u32_array - Find and read an array of 32 bit integers
  * from a property.
  *
  * @np:		device node from which the property value is to be read.
  * @propname:	name of the property to be searched.
  * @out_value:	pointer to return value, modified only if return value is 0.
+ * @sz:		number of array elements to read
  *
  * Search for a property in a device node and read 32-bit value(s) from
  * it. Returns 0 on success, -EINVAL if the property does not exist,

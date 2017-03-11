@@ -604,10 +604,10 @@ module_param_call(iusb_control, bq24296_set_iusb_control,
 #define INPUT_CURRENT_LIMIT_MAX_MA  3000
 #define INPUT_CURRENT_LIMIT_TA      2000
 #define INPUT_CURRENT_LIMIT_FACTORY 2000
-#define INPUT_CURRENT_LIMIT_USB20   500
+#define INPUT_CURRENT_LIMIT_USB20   900
 #define INPUT_CURRENT_LIMIT_USB30   900
 #ifdef CONFIG_CHARGER_UNIFIED_WLC
-#define INPUT_CURRENT_LIMIT_WLC		900	/* 900mA */
+#define INPUT_CURRENT_LIMIT_WLC		800	/* 800mA to reduce heat, was 900mA */
 #define INPUT_CURRENT_LIMIT_WLC_ADJUST	500	/* 500mA */
 #endif
 static int bq24296_set_input_i_limit(struct bq24296_chip *chip, int ma)

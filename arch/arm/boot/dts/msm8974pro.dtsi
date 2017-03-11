@@ -1570,44 +1570,31 @@
 &msm_gpu {
 	/* Updated chip ID */
 	qcom,chipid = <0x03030002>;
-	qcom,msm-bus,num-cases = <15>;
+	qcom,msm-bus,num-cases = <8>;
 	qcom,bus-control;
-	qcom,initial-pwrlevel = <3>;
+	qcom,initial-pwrlevel = <5>;
 
 	/* Updated bus bandwidth requirements */
 	qcom,msm-bus,vectors-KBps =
 		/* Off */
 		<26 512 0 0>, <89 604 0 0>,
-		/* Sub-SVS / SVS */
-		<26 512 1200000 2456000>, <89 604 0 3200000>,
-		/* SVS */
-		<26 512 1200000 2456000>, <89 604 0 3200000>,
-		/* low Nominal / SVS */
-		<26 512 0 3680000>, <89 604 0 3200000>,
-		/* SVS / low Nominal */
-		<26 512 1200000 2456000>, <89 604 0 5280000>,
-		/* low Nominal / low Nominal */
-		<26 512 0 3680000>, <89 604 0 5280000>,
-		/* Nominal / low Nominal */
-		<26 512 0 4912000>, <89 604 0 5280000>,
-		/* low Nominal / Nominal */
-		<26 512 0 3680000>, <89 604 0 6224000>,
-		/* Nominal / Nominal */
-		<26 512 0 4912000>, <89 604 0 6224000>,
-		/* Turbo / Nominal */
-		<26 512 0 7464000>, <89 604 0 6224000>,
-		/* low Nominal / low Turbo */
-		<26 512 0 3680000>, <89 604 0 7398000>,
-		/* Nominal / low Turbo */
-		<26 512 0 4912000>, <89 604 0 7398000>,
-		/* Turbo / low Turbo */
-		<26 512 0 7464000>, <89 604 0 7398000>,
-		/* Nominal / Turbo */
-		<26 512 0 4912000>, <89 604 0 9248000>,
-		/* Turbo / Turbo */
-		<26 512 0 7464000>, <89 604 0 9248000>;
+		/* gpu=27  bus=300 ddr=200/933 */
+		<26 512 0 4800000>, <89 604 0 3200000>,
+		/* gpu=200 bus=333 ddr=300/933 */
+		<26 512 0 6400000>, <89 604 0 4800000>,
+		/* gpu=330 bus=533 ddr=400/933 */
+		<26 512 0 8528000>, <89 604 0 6400000>,
+		/* gpu=389 bus=600 ddr=450/933 */
+		<26 512 0 9600000>, <89 604 0 7200000>,
+		/* gpu=462 bus=667 ddr=550/933 */
+		<26 512 0 10672000>, <89 604 0 8800000>,
+		/* gpu=578 bus=800 ddr=600/933 */
+		<26 512 0 12800000>, <89 604 0 9600000>,
+		/* gpu=620 bus=933 ddr=650/933 */
+		<26 512 0 14928000>, <89 604 0 10400000>;
 
-       qcom,gpu-pwrlevels {
+
+	qcom,gpu-pwrlevels {
                #address-cells = <1>;
                #size-cells = <0>;
 
@@ -1615,44 +1602,50 @@
 
                qcom,gpu-pwrlevel@0 {
                        reg = <0>;
-                       qcom,gpu-freq = <578000000>;
-                       qcom,bus-freq = <14>;
-                       qcom,io-fraction = <101>;
+                       qcom,gpu-freq = <620000000>;
+                       qcom,bus-freq = <7>;
                };
 
                qcom,gpu-pwrlevel@1 {
                        reg = <1>;
-                       qcom,gpu-freq = <462400000>;
-                       qcom,bus-freq = <11>;
-                       qcom,io-fraction = <101>;
+                       qcom,gpu-freq = <578000000>;
+                       qcom,bus-freq = <6>;
                };
 
                qcom,gpu-pwrlevel@2 {
                        reg = <2>;
-                       qcom,gpu-freq = <389000000>;
-                       qcom,bus-freq = <8>;
-                       qcom,io-fraction = <101>;
+                       qcom,gpu-freq = <462400000>;
+                       qcom,bus-freq = <5>;
                };
 
                qcom,gpu-pwrlevel@3 {
                        reg = <3>;
-                       qcom,gpu-freq = <330000000>;
-                       qcom,bus-freq = <5>;
-                       qcom,io-fraction = <101>;
+                       qcom,gpu-freq = <389000000>;
+                       qcom,bus-freq = <4>;
                };
 
                qcom,gpu-pwrlevel@4 {
                        reg = <4>;
-                       qcom,gpu-freq = <200000000>;
-                       qcom,bus-freq = <2>;
-                       qcom,io-fraction = <101>;
+                       qcom,gpu-freq = <330000000>;
+                       qcom,bus-freq = <3>;
                };
 
                qcom,gpu-pwrlevel@5 {
                        reg = <5>;
+                       qcom,gpu-freq = <200000000>;
+                       qcom,bus-freq = <2>;
+               };
+
+               qcom,gpu-pwrlevel@6 {
+                       reg = <6>;
                        qcom,gpu-freq = <27000000>;
                        qcom,bus-freq = <0>;
-                       qcom,io-fraction = <101>;
+               };
+
+               qcom,gpu-pwrlevel@7 {
+                       reg = <7>;
+                       qcom,gpu-freq = <27000000>;
+                       qcom,bus-freq = <0>;
                };
        };
 };
@@ -1754,10 +1747,14 @@
 	};
 };
 
-&memory_hole {
-	qcom,memblock-remove = <0x05a00000 0x7800000
-				0x0fa00000 0x500000>; /* Address and size of the hole */
-};
+/*
+ * Removing this memory hole on the LG G3 after removing all of the tracers
+ * and memory loggers, reclaiming 120 MiB of RAM
+ */
+//&memory_hole {
+//	qcom,memblock-remove = <0x05a00000 0x7800000
+//				0x0fa00000 0x500000>; /* Address and size of the hole */
+//};
 
 &gdsc_venus {
 	qcom,skip-logic-collapse;

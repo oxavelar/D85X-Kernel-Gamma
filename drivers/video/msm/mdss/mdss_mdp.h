@@ -20,6 +20,7 @@
 #include <linux/platform_device.h>
 #include <linux/notifier.h>
 #include <linux/kref.h>
+#include <linux/kallsyms.h>
 
 #include "mdss.h"
 #include "mdss_mdp_hwio.h"

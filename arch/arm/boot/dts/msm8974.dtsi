@@ -562,7 +562,8 @@
 		interrupt-names = "hc_irq", "pwr_irq";
 		qcom,clk-rates = <400000 20000000 25000000 50000000 100000000 200000000>;
 		qcom,bus-speed-mode = "HS200_1p8v", "DDR_1p8v";
-		qcom,cpu-dma-latency-us = <200>;
+		qcom,cpu-dma-latency-us = <301>;
+		qcom,cpu-affinity = "affine_cores";
 
 		qcom,msm-bus,name = "sdhc1";
 		qcom,msm-bus,num-cases = <9>;
@@ -592,7 +593,8 @@
 
 		qcom,clk-rates = <400000 20000000 25000000 50000000 100000000 200000000>;
 		qcom,bus-width = <4>;
-		qcom,cpu-dma-latency-us = <200>;
+		qcom,cpu-dma-latency-us = <301>;
+		qcom,cpu-affinity = "affine_cores";
 
 		qcom,msm-bus,name = "sdhc2";
 		qcom,msm-bus,num-cases = <8>;
@@ -635,7 +637,8 @@
 
 		qcom,clk-rates = <400000 20000000 25000000 50000000 100000000>;
 		qcom,bus-width = <4>;
-		qcom,cpu-dma-latency-us = <200>;
+		qcom,cpu-dma-latency-us = <301>;
+		qcom,cpu-affinity = "affine_cores";
 
 		qcom,msm-bus,name = "sdhc3";
 		qcom,msm-bus,num-cases = <8>;
@@ -677,7 +680,8 @@
 
 		qcom,clk-rates = <400000 20000000 25000000 50000000 100000000>;
 		qcom,bus-width = <4>;
-		qcom,cpu-dma-latency-us = <200>;
+		qcom,cpu-dma-latency-us = <301>;
+		qcom,cpu-affinity = "affine_cores";
 
 		qcom,msm-bus,name = "sdhc4";
 		qcom,msm-bus,num-cases = <8>;
@@ -1006,10 +1010,10 @@
 		qcom,pvs-config-ver = <1>;
 
 		qcom,l2-fmax =
-			<          0 0			 >,
-			<  576000000 4 /* SVS_SOC */	 >,
-			< 1036800000 5 /* NORMAL */	 >,
-			< 1728000000 7 /* SUPER_TURBO */ >;
+			<          0 0 >,
+			<  576000000 4 >,
+			< 1036800000 5 >,
+			< 2035200000 7 >;
 
 		qcom,speed0-pvs0-bin-v0 =
 			<          0       0   0 >,
@@ -1607,9 +1611,43 @@
 			< 2265600000  925000 691 >;
 	};
 
-	qcom,cpubw {
-		compatible = "qcom,cpubw";
-		qcom,cpu-mem-ports = <1 512>, <2 512>;
+	cache: qcom,cache@0 {
+		reg = <0 4>;
+		compatible = "devfreq-simple-dev";
+		clock-name = "l2_clk";
+		polling-ms = <4>;
+		governor = "cpufreq";
+		freq-tbl-khz =
+			<  300000 >,
+			<  345600 >,
+			<  422400 >,
+			<  499200 >,
+			<  576000 >,
+			<  652800 >,
+			<  729600 >,
+			<  806400 >,
+			<  883200 >,
+			<  960000 >,
+			< 1036800 >,
+			< 1113600 >,
+			< 1190400 >,
+			< 1267200 >,
+			< 1344000 >,
+			< 1420800 >,
+			< 1497600 >,
+			< 1574400 >,
+			< 1651200 >,
+			< 1728000 >,
+			< 1881600 >,
+			< 2035200 >;
+
+	};
+
+	cpubw: qcom,cpubw {
+		compatible = "qcom,devbw";
+		governor = "cpufreq";
+		qcom,src-dst-ports = <1 512>, <2 512>;
+		qcom,active-only;
 		qcom,bw-tbl =
 			<  381 /*  50 MHz */ >,
 			<  572 /*  75 MHz */ >,
@@ -1620,34 +1658,65 @@
 			< 3509 /* 460 MHz */ >,
 			< 4684 /* 614 MHz */ >,
 			< 6103 /* 800 MHz */ >,
-			< 7102 /* 931 MHz */ >;
+			< 7102 /* 933 MHz */ >;
 	};
 
 	qcom,kraitbw-l2pm {
 		compatible = "qcom,kraitbw-l2pm";
 		interrupts = <0 1 1>;
 		qcom,bytes-per-beat = <8>;
+		qcom,target-dev = <&cache>;
+	};
+
+	devfreq-cpufreq {
+		cpubw-cpufreq {
+			target-dev = <&cpubw>;
+			cpu-to-dev-map =
+				<  300000  572 >,
+				<  422400 1144 >,
+				<  652800 1525 >,
+				<  883200 2342 >,
+				< 1190400 3509 >,
+				< 1497600 4684 >,
+				< 1728000 6103 >,
+				< 2457600 7102 >;
+		};
+		cache-cpufreq {
+			target-dev = <&cache>;
+			cpu-to-dev-map =
+				<  300000  300000 >,
+				<  422400  422400 >,
+				<  652800  499200 >,
+				<  883200  576000 >,
+				<  960000  960000 >,
+				< 1190400 1036800 >,
+				< 1267200 1267200 >,
+				< 1497600 1497600 >,
+				< 1574400 1574400 >,
+				< 1728000 1728000 >,
+				< 2457600 2035200 >;
+		};
 	};
 
 	qcom,msm-cpufreq@0 {
 		reg = <0 4>;
 		compatible = "qcom,msm-cpufreq";
 		qcom,cpufreq-table =
-			<  300000  300000  572 >,
-			<  422400  422400 1144 >,
-			<  652800  499200 1525 >,
-			<  729600  576000 2342 >,
-			<  883200  576000 2342 >,
-			<  960000  960000 3509 >,
-			< 1036800 1036800 3509 >,
-			< 1190400 1036800 3509 >,
-			< 1267200 1267200 4684 >,
-			< 1497600 1497600 4684 >,
-			< 1574400 1574400 6103 >,
-			< 1728000 1651200 6103 >,
-			< 1958400 1728000 7102 >,
-			< 2265600 1728000 7102 >,
-			< 2457600 1728000 7102 >;
+			<  300000 >,
+			<  422400 >,
+			<  652800 >,
+			<  729600 >,
+			<  883200 >,
+			<  960000 >,
+			< 1036800 >,
+			< 1190400 >,
+			< 1267200 >,
+			< 1497600 >,
+			< 1574400 >,
+			< 1728000 >,
+			< 1958400 >,
+			< 2265600 >,
+			< 2457600 >;
 	};
 
 	usb3: qcom,ssusb@f9200000 {
@@ -2322,7 +2391,7 @@
 	qcom,msm-thermal {
 		compatible = "qcom,msm-thermal";
 		qcom,sensor-id = <5>;
-		qcom,poll-ms = <250>;
+		qcom,poll-ms = <50>;
 		qcom,limit-temp = <60>;
 		qcom,temp-hysteresis = <10>;
 		qcom,therm-reset-temp = <115>;
@@ -2331,13 +2400,13 @@
 		qcom,core-limit-temp = <80>;
 		qcom,core-temp-hysteresis = <10>;
 		qcom,core-control-mask = <0xe>;
-		qcom,hotplug-temp = <110>;
+		qcom,hotplug-temp = <105>;
 		qcom,hotplug-temp-hysteresis = <20>;
 		qcom,cpu-sensors = "tsens_tz_sensor5", "tsens_tz_sensor6",
 				"tsens_tz_sensor7", "tsens_tz_sensor8";
-		qcom,freq-mitigation-temp = <110>;
+		qcom,freq-mitigation-temp = <105>;
 		qcom,freq-mitigation-temp-hysteresis = <20>;
-		qcom,freq-mitigation-value = <960000>;
+		qcom,freq-mitigation-value = <300000>;
 		qcom,freq-mitigation-control-mask = <0x01>;
 		qcom,vdd-restriction-temp = <5>;
 		qcom,vdd-restriction-temp-hysteresis = <10>;
@@ -2349,19 +2418,19 @@
 
 		qcom,vdd-dig-rstr{
 			qcom,vdd-rstr-reg = "vdd-dig";
-			qcom,levels = <5 7 7>; /* Nominal, Super Turbo, Super Turbo */
+			qcom,levels = <5 6 7>; /* Nominal, Turbo, Super Turbo */
 			qcom,min-level = <1>; /* No Request */
 		};
 
 		qcom,vdd-gfx-rstr{
 			qcom,vdd-rstr-reg = "vdd-gfx";
-			qcom,levels = <5 7 7>; /* Nominal, Super Turbo, Super Turbo */
+			qcom,levels = <5 6 6>; /* Nominal, Turbo, Turbo */
 			qcom,min-level = <1>; /* No Request */
 		};
 
 		qcom,vdd-apps-rstr{
 			qcom,vdd-rstr-reg = "vdd-apps";
-			qcom,levels = <1881600 1958400 2265600>;
+			qcom,levels = <1881600>;
 			qcom,freq-req;
 		};
 	};
