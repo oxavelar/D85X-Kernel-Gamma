@@ -26,11 +26,7 @@ msm_adreno-y += \
 	adreno_coresight.o \
 	adreno_trace.o \
 	adreno_a2xx.o \
-	adreno_a2xx_trace.o \
-	adreno_a2xx_snapshot.o \
 	adreno_a3xx.o \
-	adreno_a3xx_trace.o \
-	adreno_a3xx_snapshot.o \
 	adreno.o
 
 msm_adreno-$(CONFIG_DEBUG_FS) += adreno_debugfs.o adreno_profile.o
