@@ -1615,7 +1615,7 @@
 		reg = <0 4>;
 		compatible = "devfreq-simple-dev";
 		clock-name = "l2_clk";
-		polling-ms = <4>;
+		polling-ms = <1>;
 		governor = "cpufreq";
 		freq-tbl-khz =
 			<  300000 >,

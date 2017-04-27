@@ -1572,14 +1572,14 @@
 	qcom,chipid = <0x03030002>;
 	qcom,msm-bus,num-cases = <8>;
 	qcom,bus-control;
-	qcom,initial-pwrlevel = <5>;
+	qcom,initial-pwrlevel = <4>;
 
 	/* Updated bus bandwidth requirements */
 	qcom,msm-bus,vectors-KBps =
 		/* Off */
 		<26 512 0 0>, <89 604 0 0>,
-		/* gpu=27  bus=100 ddr=100/933 */
-		<26 512 0 1600000>, <89 604 0 1600000>,
+		/* gpu=27  bus=200 ddr=200/933 */
+		<26 512 0 3200000>, <89 604 0 3200000>,
 		/* gpu=200 bus=460 ddr=460/933 */
 		<26 512 0 7360000>, <89 604 0 7360000>,
 		/* gpu=330 bus=460 ddr=460/933 */
