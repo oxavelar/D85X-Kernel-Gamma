@@ -1634,7 +1634,7 @@
 
 	};
 
-	memlat_cpu: qcom,memlat-cpu {
+	memlat: qcom,memlat-cpu {
 		compatible = "qcom,devbw";
 		governor = "powersave";
 		qcom,src-dst-ports = <1 512>, <2 512>;
@@ -1654,8 +1654,8 @@
 
 	qcom,arm-memlat-mon {
 		compatible = "qcom,arm-memlat-mon";
-		qcom,cpulist =	<&CPU0 &CPU1 &CPU2 &CPU3>;
-		qcom,target-dev = <&memlat_cpu>;
+		qcom,firstcpu =	<&CPU0>;
+		qcom,target-dev = <&memlat>;
 	};
 
 	cpubw: qcom,cpubw {
