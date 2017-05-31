@@ -1678,7 +1678,7 @@
 
 	mincpubw: qcom,mincpubw {
 		compatible = "qcom,devbw";
-		governor = "powersave";
+		governor = "cpufreq";
 		qcom,src-dst-ports = <1 512>, <2 512>;
 		qcom,active-only;
 		qcom,bw-tbl =
@@ -1734,7 +1734,8 @@
 		mincpubw-cpufreq {
 			target-dev = <&mincpubw>;
 			cpu-to-dev-map =
-				< 1497600 1525 >;
+				< 960000  1525 >,
+				< 1497600 3509 >;
 		};
 	};
 
