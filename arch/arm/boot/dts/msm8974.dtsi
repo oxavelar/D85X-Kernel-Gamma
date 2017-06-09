@@ -1734,8 +1734,8 @@
 		mincpubw-cpufreq {
 			target-dev = <&mincpubw>;
 			cpu-to-dev-map =
-				< 960000  2342 >,
-				< 1497600 6103 >;
+				< 960000  1525 >,
+				< 1497600 3509 >;
 		};
 	};
 
