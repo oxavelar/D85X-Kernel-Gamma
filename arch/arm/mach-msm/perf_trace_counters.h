@@ -26,6 +26,7 @@
 #define NUM_L1_CTRS 4
 #define NUM_L2_PERCPU 2
 
+#include <linux/cpu.h>
 #include <linux/sched.h>
 #include <linux/cpumask.h>
 #include <linux/tracepoint.h>

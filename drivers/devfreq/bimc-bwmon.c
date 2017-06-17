@@ -158,6 +158,7 @@ static unsigned long mon_get_count(struct bwmon *m)
 /* ********** CPUBW specific code  ********** */
 
 /* Returns MBps of read/writes for the sampling window. */
+/*
 static unsigned int bytes_to_mbps(long long bytes, unsigned int us)
 {
 	bytes *= USEC_PER_SEC;
@@ -165,6 +166,7 @@ static unsigned int bytes_to_mbps(long long bytes, unsigned int us)
 	bytes = DIV_ROUND_UP_ULL(bytes, SZ_1M);
 	return bytes;
 }
+*/
 
 static unsigned int mbps_to_bytes(unsigned long mbps, unsigned int ms,
 				  unsigned int tolerance_percent)
@@ -176,28 +178,22 @@ static unsigned int mbps_to_bytes(unsigned long mbps, unsigned int ms,
 	return mbps;
 }
 
-static unsigned long meas_bw_and_set_irq(struct bw_hwmon *hw,
-					 unsigned int tol, unsigned int us)
+static unsigned long get_bytes_and_clear(struct bw_hwmon *hw)
 {
-	unsigned long mbps;
+	unsigned long bytes;
 	u32 limit;
-	unsigned int sample_ms = hw->df->profile->polling_ms;
 	struct bwmon *m = to_bwmon(hw);
 
 	mon_disable(m);
 
-	mbps = mon_get_count(m);
-	mbps = bytes_to_mbps(mbps, us);
+	bytes = mon_get_count(m);
 
 	/*
 	 * If the counter wraps on thres, don't set the thres too low.
 	 * Setting it too low runs the risk of the counter wrapping around
 	 * multiple times before the IRQ is processed.
 	 */
-	if (likely(!m->spec->wrap_on_thres))
-		limit = mbps_to_bytes(mbps, sample_ms, tol);
-	else
-		limit = mbps_to_bytes(max(mbps, 400UL), sample_ms, tol);
+	limit = max(bytes, 800000UL);
 
 	mon_set_limit(m, limit);
 
@@ -205,8 +201,7 @@ static unsigned long meas_bw_and_set_irq(struct bw_hwmon *hw,
 	mon_irq_clear(m);
 	mon_enable(m);
 
-	dev_dbg(m->dev, "MBps = %lu\n", mbps);
-	return mbps;
+	return bytes;
 }
 
 static irqreturn_t bwmon_intr_handler(int irq, void *dev)
@@ -367,7 +362,7 @@ static int bimc_bwmon_driver_probe(struct platform_device *pdev)
 	m->hw.stop_hwmon = &stop_bw_hwmon,
 	m->hw.suspend_hwmon = &suspend_bw_hwmon,
 	m->hw.resume_hwmon = &resume_bw_hwmon,
-	m->hw.meas_bw_and_set_irq = &meas_bw_and_set_irq,
+	m->hw.get_bytes_and_clear = &get_bytes_and_clear,
 
 	ret = register_bw_hwmon(dev, &m->hw);
 	if (ret) {

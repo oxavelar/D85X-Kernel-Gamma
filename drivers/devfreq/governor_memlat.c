@@ -14,7 +14,6 @@
 #define pr_fmt(fmt) "mem_lat: " fmt
 
 #include <linux/kernel.h>
-#include <linux/sizes.h>
 #include <linux/module.h>
 #include <linux/init.h>
 #include <linux/io.h>
