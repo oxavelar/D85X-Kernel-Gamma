@@ -193,7 +193,6 @@ clear:
 		((priv->bin.busy_time * 100 / priv->bin.total_time) < 98))
 		val = 1;
 
-
 	priv->bus.total_time = 0;
 	priv->bus.gpu_time = 0;
 	priv->bus.ram_time = 0;
