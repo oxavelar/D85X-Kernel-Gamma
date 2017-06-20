@@ -152,7 +152,7 @@ static int tz_get_target_freq(struct devfreq *devfreq, unsigned long *freq,
 	if (val) {
 		level += val;
 		level = max(level, 0);
-		level = min_t(int, level, devfreq->profile->max_state - 1);
+		level = min_t(int, level, devfreq->profile->max_state);
 		goto clear;
 	}
 
@@ -304,6 +304,8 @@ static int tz_resume(struct devfreq *devfreq)
 static int tz_suspend(struct devfreq *devfreq)
 {
 	struct devfreq_msm_adreno_tz_data *priv = devfreq->data;
+	struct devfreq_dev_profile *profile = devfreq->profile;
+	unsigned long freq;
 
 	__secure_tz_entry2(TZ_RESET_ID, 0, 0);
 
@@ -312,7 +314,10 @@ static int tz_suspend(struct devfreq *devfreq)
 	priv->bus.total_time = 0;
 	priv->bus.gpu_time = 0;
 	priv->bus.ram_time = 0;
-	return 0;
+
+	/* Must go one level deeper to get the 27 MHz frequency */
+	freq = profile->freq_table[profile->max_state - 1];
+	return profile->target(devfreq->dev.parent, &freq, 0);
 }
 
 static int tz_handler(struct devfreq *devfreq, unsigned int event, void *data)
