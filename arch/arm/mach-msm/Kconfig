@@ -1857,15 +1857,9 @@ config MSM_DALRPC
 config MSM_DALRPC_TEST
 	tristate "DAL RPC test module"
 	depends on (MSM_DALRPC && DEBUG_FS)
-	default n
+	default m
 	help
 	  Exercises DAL RPC calls to QDSP6.
-
-config INTELLI_PLUG
-	bool "Enable intelli-plug cpu hotplug driver"
-	default y
-	help
-	  Generic Intelli-plug cpu hotplug driver for ARM SOCs
 
 if CPU_FREQ_MSM
 
@@ -2001,7 +1995,7 @@ config MSM_VREG_SWITCH_INVERTED
 
 config MSM_DMA_TEST
 	tristate "MSM DMA test module"
-	default n
+	default m
 	help
 	  Intended to be compiled as a module.  Provides a device node
 	  and ioctls for testing the MSM dma system.
