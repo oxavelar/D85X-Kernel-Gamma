@@ -1615,6 +1615,7 @@
 		reg = <0 4>;
 		compatible = "devfreq-simple-dev";
 		clock-name = "l2_clk";
+		polling-ms = <10>;
 		governor = "cpufreq";
 		freq-tbl-khz =
 			<  300000 >,
@@ -2457,7 +2458,7 @@
 
 		qcom,vdd-dig-rstr{
 			qcom,vdd-rstr-reg = "vdd-dig";
-			qcom,levels = <5 6 7>; /* Nominal, Turbo, Super Turbo */
+			qcom,levels = <5 6 6>; /* Nominal, Turbo, Turbo */
 			qcom,min-level = <1>; /* No Request */
 		};
 
