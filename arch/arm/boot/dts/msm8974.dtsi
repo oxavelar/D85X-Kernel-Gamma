@@ -562,8 +562,7 @@
 		interrupt-names = "hc_irq", "pwr_irq";
 		qcom,clk-rates = <400000 20000000 25000000 50000000 100000000 200000000>;
 		qcom,bus-speed-mode = "HS200_1p8v", "DDR_1p8v";
-		qcom,cpu-dma-latency-us = <301>;
-		qcom,cpu-affinity = "affine_cores";
+		qcom,cpu-dma-latency-us = <200>;
 
 		qcom,msm-bus,name = "sdhc1";
 		qcom,msm-bus,num-cases = <9>;
@@ -593,8 +592,7 @@
 
 		qcom,clk-rates = <400000 20000000 25000000 50000000 100000000 200000000>;
 		qcom,bus-width = <4>;
-		qcom,cpu-dma-latency-us = <301>;
-		qcom,cpu-affinity = "affine_cores";
+		qcom,cpu-dma-latency-us = <200>;
 
 		qcom,msm-bus,name = "sdhc2";
 		qcom,msm-bus,num-cases = <8>;
@@ -637,8 +635,7 @@
 
 		qcom,clk-rates = <400000 20000000 25000000 50000000 100000000>;
 		qcom,bus-width = <4>;
-		qcom,cpu-dma-latency-us = <301>;
-		qcom,cpu-affinity = "affine_cores";
+		qcom,cpu-dma-latency-us = <200>;
 
 		qcom,msm-bus,name = "sdhc3";
 		qcom,msm-bus,num-cases = <8>;
@@ -680,8 +677,7 @@
 
 		qcom,clk-rates = <400000 20000000 25000000 50000000 100000000>;
 		qcom,bus-width = <4>;
-		qcom,cpu-dma-latency-us = <301>;
-		qcom,cpu-affinity = "affine_cores";
+		qcom,cpu-dma-latency-us = <200>;
 
 		qcom,msm-bus,name = "sdhc4";
 		qcom,msm-bus,num-cases = <8>;
@@ -2446,7 +2442,7 @@
 				"tsens_tz_sensor7", "tsens_tz_sensor8";
 		qcom,freq-mitigation-temp = <105>;
 		qcom,freq-mitigation-temp-hysteresis = <20>;
-		qcom,freq-mitigation-value = <300000>;
+		qcom,freq-mitigation-value = <960000>;
 		qcom,freq-mitigation-control-mask = <0x01>;
 		qcom,vdd-restriction-temp = <5>;
 		qcom,vdd-restriction-temp-hysteresis = <10>;
@@ -2470,7 +2466,7 @@
 
 		qcom,vdd-apps-rstr{
 			qcom,vdd-rstr-reg = "vdd-apps";
-			qcom,levels = <1881600>;
+			qcom,levels = <1881600 1958400 2265600>;
 			qcom,freq-req;
 		};
 	};
