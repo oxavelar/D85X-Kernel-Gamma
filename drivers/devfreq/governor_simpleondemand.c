@@ -23,6 +23,7 @@ static int devfreq_simple_ondemand_func(struct devfreq *df,
 					u32 *flag)
 {
 	struct devfreq_dev_status stat;
+	unsigned long long a, b;
 	int err;
 	unsigned int dfso_upthreshold = DFSO_UPTHRESHOLD;
 	unsigned int dfso_downdifferential = DFSO_DOWNDIFFERENCTIAL;
