@@ -404,4 +404,3 @@ void msm_vidc_debugfs_deinit_drv(void)
 {
 	mutex_destroy(&dbg_buf.lock);
 }
-

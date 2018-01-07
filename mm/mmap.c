@@ -1611,8 +1611,8 @@ try_again:
 			return (mm->free_area_cache = addr);
 
  		/* remember the largest hole we saw so far */
- 		if (addr + mm->cached_hole_size < vm_start)
- 		        mm->cached_hole_size = vm_start - addr;
+		if (addr + mm->cached_hole_size < vm_start)
+		        mm->cached_hole_size = vm_start - addr;
 
 		/* try just below the current vma->vm_start */
 		addr = vm_start-len;
