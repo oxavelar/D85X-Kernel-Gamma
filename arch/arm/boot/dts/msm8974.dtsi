@@ -2239,11 +2239,6 @@
 		qcom,ipi-ping;
 	};
 
-	qcom,tz-log@fe805720 {
-		compatible = "qcom,tz-log";
-		reg = <0xfe805720 0x1000>;
-	};
-
 	qcom,venus@fdce0000 {
 		compatible = "qcom,pil-venus";
 		reg = <0xfdce0000 0x4000>,
@@ -2252,38 +2247,6 @@
 		vdd-supply = <&gdsc_venus>;
 
 		qcom,firmware-name = "venus";
-	};
-
-	qcom,cache_erp@f9012000 {
-		reg = <0xf9012000 0x80>,
-		      <0xf9089000 0x80>,
-		      <0xf9099000 0x80>,
-		      <0xf90a9000 0x80>,
-		      <0xf90b9000 0x80>,
-		      <0xf9088000 0x40>,
-		      <0xf9098000 0x40>,
-		      <0xf90a8000 0x40>,
-		      <0xf90b8000 0x40>;
-
-		reg-names = "l2_saw",
-			    "krait0_saw",
-			    "krait1_saw",
-			    "krait2_saw",
-			    "krait3_saw",
-			    "krait0_acs",
-			    "krait1_acs",
-			    "krait2_acs",
-			    "krait3_acs";
-
-		compatible = "qcom,cache_erp";
-		interrupts = <1 9 0>, <0 2 0>;
-		interrupt-names = "l1_irq", "l2_irq";
-	};
-
-	qcom,cache_dump {
-		compatible = "qcom,cache_dump";
-		qcom,l1-dump-size = <0x100000>;
-		qcom,l2-dump-size = <0x500000>;
 	};
 
 	tsens: tsens@fc4a8000 {
@@ -2296,12 +2259,6 @@
 		qcom,slope = <3200 3200 3200 3200 3200 3200 3200 3200 3200
 				3200 3200>;
 		qcom,calib-mode = "fuse_map1";
-	};
-
-	jtag_fuse: jtagfuse@fc4be024 {
-		compatible = "qcom,jtag-fuse";
-		reg = <0xfc4be024 0x8>;
-		reg-names = "fuse-base";
 	};
 
 	qcom,msm-rtb {
